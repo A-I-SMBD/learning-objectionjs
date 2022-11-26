@@ -3,8 +3,8 @@ import { User, UserId } from '../../user.entity';
 export interface CreateUserPort {
   /**
    * Создание пользователя по экземпляру класса User
-   * @param {User} user экземпляр класса USer
+   * @param {Omit<User, 'id'>} user объект, имеющий все свойства из User кроме id
    * @return id созданного пользователя
    */
-  createUser(user: User): Promise<UserId>;
+  createUser(user: Omit<User, 'id'>): Promise<UserId>;
 }

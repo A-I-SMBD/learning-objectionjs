@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../core/entities/base.entity';
+import { BaseEntity } from '../../domain-core/entities/base.entity';
 
 export type UserId = string;
 
