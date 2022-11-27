@@ -1,10 +1,16 @@
-import { HashingPasswordPort } from '../../../../../../../../domain/modules/users/modules/passwords/interfaces/ports/hashing-password.port';
-import bcrypt from 'bcrypt';
+import { HashingPasswordPort } from '../../../../../../../../../domain/modules/users/modules/passwords/interfaces/ports/hashing-password.port';
+import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class HashingPasswordBcryptAdapter implements HashingPasswordPort {
   private readonly _saltRounds: number = 10;
+
+  async generateHash(password: string): Promise<string> {
+    const hash = await bcrypt.hash(password, this._saltRounds);
+
+    return hash;
+  }
 
   /**
    * Сравнивает предоставленные пароли с хэшем

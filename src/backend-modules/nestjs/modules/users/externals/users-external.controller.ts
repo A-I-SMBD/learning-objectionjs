@@ -10,7 +10,6 @@ import {
 } from '../../../../../domain/modules/users/interfaces/usecases/find-user.usecase';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiParam } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersExternalController {
@@ -24,10 +23,8 @@ export class UsersExternalController {
 
   @Post()
   async create(@Body() { username, password }: CreateUserDto): Promise<string> {
-    const hash = await bcrypt.hash(password, 10);
-
     const command = new CreateUserCommand({
-      password: hash,
+      password: password,
       username: username,
     });
 

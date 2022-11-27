@@ -1,7 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
-import { PasswordUseCaseSymbol } from '../../../../../../domain/modules/users/modules/passwords/interfaces/usecases/password.usecase';
-import { PasswordsService } from '../../../../../../domain/modules/users/modules/passwords/services/passwords.service';
-import { NestJsModulesRepository } from '../../../../nestjs-core/repositories/modules.repository';
+import { PasswordUseCaseSymbol } from '../../../../../../../domain/modules/users/modules/passwords/interfaces/usecases/password.usecase';
+import { PasswordsService } from '../../../../../../../domain/modules/users/modules/passwords/services/passwords.service';
+import { NestJsModulesRepository } from '../../../../../nestjs-core/repositories/modules.repository';
 import { HashingPasswordBcryptAdapter } from './hashing-password/bcrypt/hashing-password-bcrypt.adapter';
 
 const adapters = [HashingPasswordBcryptAdapter];
