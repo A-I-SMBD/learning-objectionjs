@@ -5,15 +5,18 @@ import { Model } from 'objection';
 import { AppModule } from './app.module';
 import knexConfigs from './core/knex/knex.configs';
 import { up } from './core/knex/migrations/11-27-2022-initial-schemas.migration';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
+import swaggerConfig from './core/swagger/swagger.config';
+import { INestApplication } from '@nestjs/common';
+
+type Port = string | number;
+
+const PORT: Port = process.env.PORT || 3000;
 
 function connectionToDatabase(): void {
   // Initialize knex.
   const knex = connector(knexConfigs.development);
 
-  // Bind all Models to a knex instance. If you only have one database in
-  // your server this is all you have to do. For multi database systems, see
-  // the Model.bindKnex() method.
   Model.knex(knex);
 
   createSchema(knex).catch(err => {
@@ -26,19 +29,18 @@ async function createSchema(knex: Knex<any, unknown[]>) {
   await up(knex);
 }
 
+function createSwagger(app: INestApplication) {
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, document);
+}
+
 async function bootstrap() {
   connectionToDatabase();
 
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  createSwagger(app);
 
-  await app.listen(3000);
+  await app.listen(PORT).catch(error => console.error(error));
 }
 bootstrap();
